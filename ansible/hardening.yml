@@ -15,7 +15,8 @@
         name:
           - vim
         state: present
-        - name: Disable SSH root login
+
+    - name: Disable SSH root login
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^#?PermitRootLogin'
