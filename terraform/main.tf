@@ -171,3 +171,26 @@ resource "aws_instance" "linux" {
     Name = "production-linux-server"
   }
 }
+resource "aws_s3_bucket" "ansible_ssm" {
+  bucket = "production-linux-ansible-ssm-kosha-2026"
+
+  tags = {
+    Name    = "production-linux-ansible-ssm"
+    Purpose = "Ansible SSM module transfer"
+  }
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.us-east-1.s3"
+  vpc_endpoint_type = "Gateway"
+
+  route_table_ids = [
+    aws_route_table.private.id
+  ]
+
+  tags = {
+    Name = "production-s3-endpoint"
+  }
+}
+

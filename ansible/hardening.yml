@@ -1,0 +1,39 @@
+---
+- name: Harden production Linux server
+  hosts: linux_servers
+  become: true
+
+  tasks:
+
+    - name: Update installed packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+
+    - name: Install security and administration packages
+      ansible.builtin.dnf:
+        name:
+          - curl
+          - vim
+          - rsyslog
+          - firewalld
+        state: present
+
+    - name: Ensure firewalld is enabled and running
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Allow HTTPS through firewall
+      ansible.posix.firewalld:
+        service: https
+        permanent: true
+        state: enabled
+        immediate: true
+
+    - name: Ensure rsyslog is enabled and running
+      ansible.builtin.service:
+        name: rsyslog
+        state: started
+        enabled: true
