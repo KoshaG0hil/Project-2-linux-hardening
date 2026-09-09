@@ -10,16 +10,8 @@
         name: "*"
         state: latest
 
-    - name: Install security and administration packages
+    - name: Install administration packages
       ansible.builtin.dnf:
         name:
           - vim
-          - rsyslog
-          - firewalld
         state: present
-
-    - name: Ensure rsyslog is enabled and running
-      ansible.builtin.service:
-        name: rsyslog
-        state: started
-        enabled: true
