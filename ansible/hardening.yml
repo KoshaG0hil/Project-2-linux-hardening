@@ -18,19 +18,6 @@
           - firewalld
         state: present
 
-    - name: Ensure firewalld is enabled and running
-      ansible.builtin.service:
-        name: firewalld
-        state: started
-        enabled: true
-
-    - name: Allow HTTPS through firewall
-      ansible.posix.firewalld:
-        service: https
-        permanent: true
-        state: enabled
-        immediate: true
-
     - name: Ensure rsyslog is enabled and running
       ansible.builtin.service:
         name: rsyslog
