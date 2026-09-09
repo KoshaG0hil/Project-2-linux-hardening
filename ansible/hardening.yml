@@ -13,7 +13,6 @@
     - name: Install security and administration packages
       ansible.builtin.dnf:
         name:
-          - curl
           - vim
           - rsyslog
           - firewalld
