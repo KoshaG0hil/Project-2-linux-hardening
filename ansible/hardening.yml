@@ -40,6 +40,31 @@
         validate: '/usr/sbin/sshd -t -f %s'
       notify: Restart SSH
 
+    - name: Create dedicated administration user
+      ansible.builtin.user:
+        name: securityadmin
+        groups: wheel
+        append: true
+        create_home: true
+        shell: /bin/bash
+        password_lock: true
+
+    - name: Configure sudo access for administration user
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/securityadmin
+        content: "securityadmin ALL=(ALL) ALL\n"
+        owner: root
+        group: root
+        mode: '0440'
+        validate: '/usr/sbin/visudo -cf %s'
+
+    - name: Secure SSH configuration permissions
+      ansible.builtin.file:
+        path: /etc/ssh/sshd_config
+        owner: root
+        group: root
+        mode: '0600'
+
   handlers:
 
     - name: Restart SSH
